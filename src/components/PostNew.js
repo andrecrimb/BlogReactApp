@@ -3,7 +3,25 @@ import {Field, reduxForm} from 'redux-form'
 // reduxForm é o connect para o app state form no reduxStore
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import _ from 'lodash'
 import {createPost} from "../actions";
+
+const FIELDS = {
+    title: {
+        type: 'input',
+        label: 'Title for post'
+    },
+    categories: {
+        type: 'input',
+        label: 'ENter some categories'
+    },
+    content: {
+        type: 'textarea',
+        label: 'Put the content'
+    }
+};
+
+//['title', 'categories', 'content'];
 
 class PostNew extends Component{
 
@@ -67,17 +85,13 @@ const validate = (values) => {
     const errors = {};
     // validate the form
     // the 'title' is pulled in from the name of the input field
-    if (!values.title) {
-        errors.title = 'Please enter a title for your post';
-    }
 
-    if (!values.categories) {
-        errors.categories = 'Please enter some categories';
-    }
+    _.each(FIELDS, (type, field) => {
+       if(!values[field]) {
+           errors[field] = `Enter a ${field}`
+       }
+    });
 
-    if (!values.content) {
-        errors.content = 'Please enter content to your post';
-    }
 
     return errors;
 
